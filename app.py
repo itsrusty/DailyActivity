@@ -1,32 +1,63 @@
+from data import dataTasked
+import os
+
 def run():
 
     # functions
     def addTask():
         dataTask = input("ingresa tarea nueva: ")
-        typeTask = input("ingresa el tipo de la tarea: ")
+        contentTask = input("información de la tarea: ")
 
         # create file task
-        fileTask = open("./public/" + dataTask + ".txt", 'a+')
+        fileTask = open("./data/" + dataTask + ".txt", 'a+')
+        fileTask.write(contentTask)
+        fileTask.close()
+
+        run()
+        print()
 
     options = {"1": "Crear nueva tarea",
                "2": "Ver tareas pendientes", "3": "Borrar pendiente"}
 
-    def showTask():
-        print("show")
+    def readTask():
+        print()
+        dataTasked.showData()
+        optionsReadTask = ["borrar tarea", "leer tarea"]
+        print()
+        for x in optionsReadTask:
+            print("opciones extra: " + x)
+        op = input()
+        if (op == "1"):
+            deleteTask()
+        elif (op == "2"):
+            read = input("ingresa el nombre del archivo a leer: ")
+            with open("./data/" + read, "r") as f:
+                content = f.read()
+                print(content)
 
+    # delete section
     def deleteTask():
-        print("delete")
+        # show data directory
+        dataTasked.showData()
+        nameTask = input("ingresa nombre de la tarea a borrar: ")
+
+        # delete task
+        os.remove("./data/" + nameTask)
+        print("tarea eliminada")
+        run()
+
+    # **index**
     print("Bienvenido!")
     print()
-    for x in options.keys():
-        for y in options.values():
-            print(x + " " + y)
-            break
+
+    for listOptions in options.items():
+        print(listOptions)
+
     opt = input("Selecciona una opción: ")
     if (opt == str(1)):
         addTask()
     elif (opt == str(2)):
-        showTask()
+        readTask()
     elif (opt == str(3)):
         deleteTask()
 
